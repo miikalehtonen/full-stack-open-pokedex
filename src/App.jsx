@@ -1,6 +1,6 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom';
-import { useMatch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'
+import { useMatch } from 'react-router-dom'
 import { useApi } from './useApi'
 import LoadingSpinner from './LoadingSpinner'
 import ErrorMessage from './ErrorMessage'
