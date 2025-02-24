@@ -71,18 +71,22 @@ jobs:
     steps:
       - name: Notify Discord on Success
         if: ${{ success() }}
-        uses: rjstone/discord-webhook-notify@v1
+        uses: stegzilla/discord-notify@v2
         with:
-          severity: info
-          text: A new version of Pokedex deployed
-          description: to https://full-stack-open-pokedex-thrumming-hill-3413.fly.dev/ by ${{ github.actor }}
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          title: A new version of Pokedex deployed
+          message: to https://full-stack-open-pokedex-thrumming-hill-3413.fly.dev/ by ${{ github.actor }}
+          include_image: false
+          username: GitHub
+          avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
 
       - name: Notify Discord on Failure
         if: ${{ failure() }}
-        uses: rjstone/discord-webhook-notify@v1
+        uses: stegzilla/discord-notify@v2
         with:
-          severity: error
-          text: Build failed
-          description: commit ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) by ${{ github.actor }} broke the build :(
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          title: Build failed
+          message: commit ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }} by ${{ github.actor }} broke the build :(
+          include_image: false
+          username: GitHub
+          avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
