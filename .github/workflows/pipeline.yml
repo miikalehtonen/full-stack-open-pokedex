@@ -71,7 +71,7 @@ jobs:
     steps:
       - name: Notify Discord on Success
         if: ${{ success() }}
-        uses: rjstone/discord-webhook-notify@v1.0.4
+        uses: rjstone/discord-webhook-notify@v1
         with:
           severity: info
           text: A new version of Pokedex deployed
@@ -80,9 +80,9 @@ jobs:
 
       - name: Notify Discord on Failure
         if: ${{ failure() }}
-        uses: rjstone/discord-webhook-notify@v1.0.4
+        uses: rjstone/discord-webhook-notify@v1
         with:
           severity: error
           text: Build failed
-          description: commit [${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) by ${{ github.actor }} broke the build :("
+          description: commit ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) by ${{ github.actor }} broke the build :(
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
