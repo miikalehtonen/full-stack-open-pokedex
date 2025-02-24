@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: simple_deployment_pipeline
     concurrency: deploy-group
-    if: ${{ github.event_name == 'push' && env.SKIP_DEPLOY_AND_TAG == 'false' }}
+    if: ${{ github.event_name == 'push' && github.env.SKIP_DEPLOY_AND_TAG == 'false' }}
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
@@ -58,7 +58,7 @@ jobs:
     name: Bump version and tag release
     runs-on: ubuntu-20.04
     needs: [simple_deployment_pipeline, deploy]
-    if: ${{ github.event_name == 'push' && env.SKIP_DEPLOY_AND_TAG == 'false' }}
+    if: ${{ github.event_name == 'push' && github.env.SKIP_DEPLOY_AND_TAG == 'false' }}
     steps:
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.64.0
