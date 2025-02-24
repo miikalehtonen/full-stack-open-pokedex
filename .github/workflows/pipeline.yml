@@ -28,7 +28,7 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
-      - name: commit messages
+      - name: skip tag
         run: echo "$SKIP_DEPLOY_AND_TAG"
 
   simple_deployment_pipeline:
