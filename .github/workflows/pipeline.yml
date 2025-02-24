@@ -8,29 +8,7 @@ on:
     branches: [main]
     types: [opened, synchronize]
 
-env:
-  SKIP_DEPLOY_AND_TAG: ${{ contains(join(github.event.commits.*.message, ' '), '#skip') }}
-
 jobs:
-  a_test_job:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: commits
-        env:
-          COMMITS: ${{ toJson(github.event.commits) }}
-        run: echo "$COMMITS"
-      - name: commit messages
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES"
-      - name: skip tag
-        run: echo "$SKIP_DEPLOY_AND_TAG"
-
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     steps:
@@ -85,3 +63,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+  
+  notify:
+    name: Notify Discord
+    runs-on: ubuntu-latest
+    needs: [simple_deployment_pipeline, deploy]
+    steps:
+      - name: Notify Discord on Success
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          severity: info
+          text: A new version of Pokedex deployed
+          description: to https://full-stack-open-pokedex-thrumming-hill-3413.fly.dev/ by ${{ github.actor }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Notify Discord on Failure
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          severity: error
+          text: Build failed
+          description: commit [${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}) by ${{ github.actor }} broke the build :("
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
