@@ -30,6 +30,9 @@ primary_region = 'arn'
     path = "/health"
     protocol = "http"
 
+[deploy]
+  strategy = "canary"
+  
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
