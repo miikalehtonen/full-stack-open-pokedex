@@ -41,6 +41,12 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
 
+      - name: DEBUG - PRINT SKIP_DEPLOY_AND_TAG
+        run: echo "SKIP_DEPLOY_AND_TAG: $SKIP_DEPLOY_AND_TAG"
+
+      - name: Debug - PRINT GITHUB EVENT JSON
+        run: echo '${{ toJson(github) }}'
+
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
